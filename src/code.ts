@@ -33,6 +33,9 @@ const observer2 = observable.subscribe(
   () => addItem('Observable has completed emitting to Observer 2'),
 );
 
+// Add our second Observer to first one
+observer.add(observer2);
+
 setTimeout(() => {
   observer.unsubscribe();
 }, 10000);
