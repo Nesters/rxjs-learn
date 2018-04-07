@@ -13,15 +13,26 @@ const observable = Observable.create(
   (observer:any) => {
     observer.next('Hello');
     observer.next('World');
-    observer.complete();
-    observer.next('!');
+    setInterval(() => {
+      observer.next('Test');
+    }, 1500);
   },
 );
  
 // Subscribe to our Observable
-observable.subscribe(
-  (x:any) => addItem(x),
-  (error:any) => addItem(error),
-  () => addItem('Completed'),
-  (nothing:any) => addItem(nothing),
+const observer = observable.subscribe(
+  (x:any) => addItem(`Observer 1 received a message: ${x}`),
+  (error:any) => addItem(`Observer 1 received an error ${error}`),
+  () => addItem('Observable has completed emitting to Observer 1'),
 );
+
+// Second Observer subscribing to Observable
+const observer2 = observable.subscribe(
+  (x:any) => addItem(`Observer 2 received a message: ${x}`),
+  (error:any) => addItem(`Observer 2 received an error ${error}`),
+  () => addItem('Observable has completed emitting to Observer 2'),
+);
+
+setTimeout(() => {
+  observer.unsubscribe();
+}, 10000);
